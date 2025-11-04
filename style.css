@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #00aeff;
+    --bg-color: #1a1a1a;
+    --sidebar-bg: #252525;
+    --content-bg: #202020;
+    --text-color: #e0e0e0;
+    --text-muted: #888;
+    --border-color: #444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 280px;
+    background-color: var(--sidebar-bg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.tagline {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 1rem;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    display: block;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.sidebar ul li a.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 700;
+}
+
+.content {
+    flex: 1;
+    padding: 3rem;
+    overflow-y: auto;
+}
+
+.content-section {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content h2 {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+}
+
+.mock-ui {
+    background-color: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.btn, .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s;
+}
+
+.btn {
+    background-color: #555;
+    color: #fff;
+}
+
+.btn:hover {
+    background-color: #666;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    background-color: #0099e6;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--sidebar-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.options-group {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.options-group label {
+    margin-right: 1rem;
+}
+
+.options-group input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+
+.result-placeholder {
+    margin-top: 2rem;
+    width: 100%;
+    height: 300px;
+    background-color: #111;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神諭AI - 甲骨文辨識與創意生成系統</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h1 class="logo">神諭AI</h1>
+            <p class="tagline">甲骨文辨識與創意生成</p>
+            <ul>
+                <li><a href="#welcome" class="nav-link active">歡迎</a></li>
+                <li><a href="#recognition" class="nav-link">圖像辨識與生成</a></li>
+                <li><a href="#jokes" class="nav-link">甲骨文笑話</a></li>
+                <li><a href="#story-dynamic" class="nav-link">說書人(動態版)</a></li>
+                <li><a href="#story-static" class="nav-link">說書人(靜態版)</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <!-- 歡迎頁面 -->
+            <section id="welcome" class="content-section active">
+                <h2>歡迎使用神諭AI</h2>
+                <p>這是一個結合古老文字與現代AI技術的工具，旨在幫助用戶辨識、學習甲骨文，並透過AI進行創意發想。</p>
+                <p>請從左側的選單中選擇一個功能模組來開始您的探索之旅。</p>
+            </section>
+
+            <!-- 辨識與生成 -->
+            <section id="recognition" class="content-section">
+                <h2>1. 圖像辨識與生成</h2>
+                <p>上傳您的甲骨文照片，AI將自動辨識其意義，並根據您的提示詞(Prompt)生成全新的藝術圖像、語音說明，最後合成為一部介紹短片。</p>
+                <div class="mock-ui">
+                    <button class="btn">上傳甲骨文照片</button>
+                    <input type="text" placeholder="請輸入生成圖片的提示詞，例如：一隻在夕陽下飛翔的鳥">
+                    <button class="btn-primary">開始辨識與生成</button>
+                    <div class="result-placeholder">
+                        <p>AI生成的影片將會顯示在此處</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 甲骨文笑話 -->
+            <section id="jokes" class="content-section">
+                <h2>2. 甲骨文笑話</h2>
+                <p>AI會根據辨識出的甲骨文，為您創作一則相關的趣味笑話，並將笑話內容配上圖像與語音，生成一段幽默短片。</p>
+                <div class="mock-ui">
+                    <input type="text" placeholder="請輸入一個甲骨文 (例如：人、山、水)">
+                    <button class="btn-primary">生成笑話影片</button>
+                    <div class="result-placeholder">
+                        <p>AI生成的笑話影片將會顯示在此處</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 說書人(動態版) -->
+            <section id="story-dynamic" class="content-section">
+                <h2>3. 說書人 (動態版)</h2>
+                <p>選擇故事人數與角色，AI將為您量身打造一部約30秒的動畫短片，透過多個動態場景講述一個與角色相關的奇妙故事。</p>
+                <div class="mock-ui">
+                    <div class="options-group">
+                        <label>選擇人數:</label>
+                        <input type="radio" name="player-dynamic" id="single-dynamic" checked> <label for="single-dynamic">單人</label>
+                        <input type="radio" name="player-dynamic" id="dual-dynamic"> <label for="dual-dynamic">雙人</label>
+                    </div>
+                    <div class="options-group">
+                        <label for="char-select-dynamic">選擇角色:</label>
+                        <select id="char-select-dynamic">
+                            <option>英勇的戰士</option>
+                            <option>智慧的祭司</option>
+                            <option>勤勞的農夫</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary">生成動態故事</button>
+                    <div class="result-placeholder">
+                        <p>AI生成的30秒動畫將會顯示在此處</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 說書人(靜態版) -->
+            <section id="story-static" class="content-section">
+                <h2>4. 說書人 (靜態版)</h2>
+                <p>與動態版類似，但AI將會生成多張精美的靜態繪本風格圖片，並配上語音旁白，組合成一部約30秒的投影片式動畫影片。</p>
+                 <div class="mock-ui">
+                    <div class="options-group">
+                        <label>選擇人數:</label>
+                        <input type="radio" name="player-static" id="single-static" checked> <label for="single-static">單人</label>
+                        <input type="radio" name="player-static" id="dual-static"> <label for="dual-static">雙人</label>
+                    </div>
+                    <div class="options-group">
+                        <label for="char-select-static">選擇角色:</label>
+                        <select id="char-select-static">
+                            <option>神秘的商人</option>
+                            <option>慈祥的母親</option>
+                            <option>好奇的孩童</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary">生成靜態故事</button>
+                    <div class="result-placeholder">
+                        <p>AI生成的30秒繪本動畫將會顯示在此處</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
