@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Oracle Bones Great Again - AI古文字敘事系統</title>
+    <link rel="stylesheet" href="style_v2.css">
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 頁首 -->
+        <header class="main-header">
+            <h1 data-i18n="app.title">骨感字典</h1>
+            <p class="subtitle" data-i18n="app.subtitle">從辨識到敘事，AI古文字互動系統</p>
+            <!-- 語言切換器 -->
+            <div class="language-switcher">
+                <div class="toggle-container">
+                    <span class="toggle-label" data-i18n="lang.zh">中文</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="language-toggle" onchange="toggleLanguage(this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" data-i18n="lang.en">EN</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 導航欄 -->
+        <nav class="top-nav">
+            <ul>
+                <li><a href="#" class="nav-link active" data-target="welcome" data-i18n="nav.welcome">歡迎使用</a></li>
+                <li><a href="#" class="nav-link" data-target="recognition" data-i18n="nav.recognition">圖像辨識</a></li>
+                <li><a href="#" class="nav-link" data-target="joke" data-i18n="nav.joke">古文字笑話</a></li>
+                <li><a href="#" class="nav-link" data-target="story" data-i18n="nav.story">說書人動畫</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <!-- 1. 歡迎頁面 -->
+            <section id="welcome" class="content-section active">
+                <div class="card text-center">
+                    <h2 data-i18n="welcome.title">歡迎來到「骨感字典」</h2>
+                    <div class="card-body">
+                        <p data-i18n="welcome.intro">這是一個結合古代智慧與現代科技的互動系統。您可以透過本系統辨識古文字、探索文字背後的趣味，甚至生成獨一無二的甲骨文故事影片。</p>
+                        <p data-i18n="welcome.meaning">「骨」代表甲骨文的本源，「感」則代表我們希望透過聲音、影像帶給您的感官新體驗。請點擊上方的功能書籤，開始您的探索之旅！</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 圖像辨識 (兩階段) -->
+            <section id="recognition" class="content-section">
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h2 data-i18n="recognition.title">圖像辨識</h2>
+                        <span class="status-indicator offline" id="apiStatus">API 未連接</span>
+                    </div>
+                    <p class="desc" data-i18n="recognition.desc">上傳古文字照片，AI將為您辨識文字。確認無誤後，可進一步生成介紹影片。</p>
+                    
+                    <!-- 第一階段：上傳與純辨識 -->
+                    <div class="step-section" id="rec-step-1">
+                        <div class="settings-row single-column">
+                            <div class="setting-group">
+                                <label data-i18n="recognition.lang">解讀語言</label>
+                                <select id="rec-lang">
+                                    <option value="zh-TW" selected data-i18n="common.lang_zh">繁體中文</option>
+                                    <option value="en-US" data-i18n="common.lang_en">English</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="upload-box">
+                            <input type="file" id="imageInput" accept="image/png, image/jpeg" hidden>
+                            <label for="imageInput" class="upload-btn" data-i18n="recognition.upload">上傳古文字照片</label>
+                            <p class="hint" data-i18n="recognition.hint">支援 .jpg, .png 格式圖片</p>
+                            <div id="imagePreviewBox" class="hidden">
+                                <img id="imagePreview" src="" alt="預覽">
+                            </div>
+                        </div>
+
+                        <button id="btn-identify-only" class="action-btn" disabled data-i18n="recognition.identify">開始辨識文字</button>
+                    </div>
+
+                    <!-- 載入動畫 -->
+                    <div id="rec-loading" class="loading-area hidden">
+                        <div class="spinner"></div>
+                        <p data-i18n="recognition.loading">正在解讀古文字...</p>
+                    </div>
+
+                    <!-- 辨識結果顯示區 -->
+                    <div id="rec-result-display" class="result-display hidden"></div>
+
+                    <!-- 第二階段：影片生成 -->
+                    <div class="step-section hidden" id="rec-step-2">
+                        <hr class="divider">
+                        <h3 data-i18n="recognition.video_title">生成介紹影片</h3>
+                        <p class="desc-small" data-i18n="recognition.video_desc">既然已經解讀了這個字，要不要製作一段影片來介紹它？</p>
+
+                        <div class="settings-row">
+                            <div class="setting-group">
+                                <label data-i18n="recognition.voice">解說語音</label>
+                                <select id="rec-voice">
+                                    <option value="gtts" data-i18n="voice.standard">標準解說 (Standard)</option>
+                                    <option value="villager" data-i18n="voice.villager">Minecraft 村民</option>
+                                    <option value="trump" data-i18n="voice.trump">川普</option>
+                                    <option value="obama" data-i18n="voice.obama">歐巴馬</option>
+                                    <option value="biden" data-i18n="voice.biden">拜登</option>
+                                    <option value="taylor" data-i18n="voice.taylor">泰勒絲</option>
+                                    <option value="morgan" data-i18n="voice.morgan">摩根費里曼</option>
+                                    <option value="hillary" data-i18n="voice.hillary">希拉蕊</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="prompt-section">
+                            <label data-i18n="recognition.style">影片風格 (AI 建議)</label>
+                            <div class="suggestion-chips">
+                                <button class="chip" onclick="setPrompt('黑白水墨風格，歷史滄桑感')" data-i18n="style.ink">📜 水墨歷史</button>
+                                <button class="chip" onclick="setPrompt('賽博龐克風格，霓虹光影')" data-i18n="style.cyber">🤖 未來科技</button>
+                                <button class="chip" onclick="setPrompt('吉卜力動畫風格，清新自然')" data-i18n="style.ghibli">🍃 吉卜力風</button>
+                                <button class="chip" onclick="setPrompt('博物館紀錄片風格，專業打光')" data-i18n="style.doc">🏛️ 紀錄片</button>
+                            </div>
+                            <input type="text" id="videoPrompt" data-i18n-placeholder="recognition.style_input" placeholder="或輸入您想要的風格...">
+                        </div>
+
+                        <button id="btn-gen-video" class="action-btn secondary" data-i18n="recognition.generate">開始生成影片</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 古文字笑話 -->
+            <section id="joke" class="content-section">
+                <div class="card">
+                    <h2 data-i18n="joke.title">古文字笑話</h2>
+                    <p class="desc" data-i18n="joke.desc">AI將根據您輸入的古文字生成幽默小笑話，並朗讀出來。</p>
+                    
+                    <div class="settings-row">
+                        <div class="setting-group">
+                            <label data-i18n="joke.char">文字</label>
+                            <input type="text" id="joke-char" data-i18n-placeholder="joke.char_hint" placeholder="例如：羊、日、水" style="padding: 10px; font-size: 1.1rem; border: 1px solid #DDD; border-radius: 6px; width: 100%;">
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-group">
+                            <label data-i18n="joke.lang">語言</label>
+                            <select id="joke-lang">
+                                <option value="zh-TW" selected data-i18n="common.lang_zh">繁體中文</option>
+                                <option value="en-US" data-i18n="common.lang_en">English</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label data-i18n="joke.voice">語音風格</label>
+                            <select id="joke-voice">
+                                <option value="gtts" data-i18n="voice.standard">標準解說 (Standard)</option>
+                                <option value="villager" data-i18n="voice.villager">Minecraft 村民</option>
+                                <option value="trump" data-i18n="voice.trump">川普</option>
+                                <option value="obama" data-i18n="voice.obama">歐巴馬</option>
+                                <option value="biden" data-i18n="voice.biden">拜登</option>
+                                <option value="taylor" data-i18n="voice.taylor">泰勒絲</option>
+                                <option value="morgan" data-i18n="voice.morgan">摩根費里曼</option>
+                                <option value="hillary" data-i18n="voice.hillary">希拉蕊</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button id="btn-joke" class="action-btn" data-i18n="joke.generate">生成笑話</button>
+
+                    <div id="joke-loading" class="loading-area hidden">
+                        <div class="spinner"></div>
+                        <p data-i18n="joke.loading">正在構思笑話並合成語音...</p>
+                    </div>
+
+                    <div class="result-placeholder" id="joke-placeholder">
+                        <p data-i18n="joke.placeholder">AI生成的笑話與語音將顯示於此</p>
+                    </div>
+
+                    <div class="result-area hidden" id="joke-result-display"></div>
+                </div>
+            </section>
+
+            <!-- 4. 說書人動畫 -->
+            <section id="story" class="content-section">
+                <div class="card">
+                    <h2 data-i18n="story.title">說書人</h2>
+                    <p class="desc" data-i18n="story.desc">輸入古文字，AI 將用相聲風格講述這個字的故事。</p>
+
+                    <div class="settings-row single-column" style="margin-bottom: 20px;">
+                        <div class="setting-group">
+                            <label data-i18n="story.char">古文字</label>
+                            <input type="text" id="story-char" data-i18n-placeholder="story.char_hint" placeholder="例如：羊、日、水" style="padding: 10px; font-size: 1.1rem; border: 1px solid #DDD; border-radius: 6px; width: 100%;">
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-group">
+                            <label data-i18n="story.lang">語言選擇</label>
+                            <select id="story-lang">
+                                <option value="zh-TW" selected data-i18n="common.lang_zh">繁體中文</option>
+                                <option value="en-US" data-i18n="common.lang_en">English</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label data-i18n="story.format">呈現方式</label>
+                            <select id="story-format">
+                                <option value="static" data-i18n="story.static">靜態版 (Static)</option>
+                                <option value="dynamic" data-i18n="story.dynamic">動態版 (Dynamic) ⭐</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="role-selection" style="margin-bottom: 20px;">
+                        <label style="font-weight:500; color:#666; margin-right:15px;" data-i18n="story.player_count">選擇人數：</label>
+                        <div class="radio-group" style="display:inline-block;">
+                            <label><input type="radio" name="playerCount" value="single" checked onchange="toggleStoryVoice()"> <span data-i18n="story.single">單人</span></label>
+                            <label><input type="radio" name="playerCount" value="dual" onchange="toggleStoryVoice()"> <span data-i18n="story.dual">雙人</span></label>
+                        </div>
+                    </div>
+
+                    <div class="voice-selectors" style="margin-bottom: 25px;">
+                        <div class="settings-row">
+                            <div class="setting-group" id="voice-a-group">
+                                <label data-i18n="story.role_a">角色 A</label>
+                                <select id="story-voice-a">
+                                    <optgroup label="🇺🇸 English Voices">
+                                        <option value="villager">Villager (EN)</option>
+                                        <option value="trump">Trump (EN)</option>
+                                        <option value="obama">Obama (EN)</option>
+                                        <option value="biden">Biden (EN)</option>
+                                        <option value="taylor">Taylor Swift (EN)</option>
+                                        <option value="morgan">Morgan Freeman (EN)</option>
+                                        <option value="hillary">Hillary Clinton (EN)</option>
+                                    </optgroup>
+                                    <optgroup label="🇨🇳 中文聲音">
+                                        <option value="villager_zh">村民 (ZH)</option>
+                                        <option value="trump_zh" selected>川普 (ZH)</option>
+                                        <option value="obama_zh">歐巴馬 (ZH)</option>
+                                        <option value="biden_zh">拜登 (ZH)</option>
+                                        <option value="taylor_zh">泰勒絲 (ZH)</option>
+                                        <option value="morgan_zh">摩根費里曼 (ZH)</option>
+                                        <option value="hillary_zh">希拉蕊 (ZH)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="setting-group hidden" id="voice-b-group">
+                                <label data-i18n="story.role_b">角色 B</label>
+                                <select id="story-voice-b">
+                                    <optgroup label="🇺🇸 English Voices">
+                                        <option value="villager">Villager (EN)</option>
+                                        <option value="trump">Trump (EN)</option>
+                                        <option value="obama">Obama (EN)</option>
+                                        <option value="biden">Biden (EN)</option>
+                                        <option value="taylor">Taylor Swift (EN)</option>
+                                        <option value="morgan">Morgan Freeman (EN)</option>
+                                        <option value="hillary">Hillary Clinton (EN)</option>
+                                    </optgroup>
+                                    <optgroup label="🇨🇳 中文聲音">
+                                        <option value="villager_zh">村民 (ZH)</option>
+                                        <option value="trump_zh">川普 (ZH)</option>
+                                        <option value="obama_zh" selected>歐巴馬 (ZH)</option>
+                                        <option value="biden_zh">拜登 (ZH)</option>
+                                        <option value="taylor_zh">泰勒絲 (ZH)</option>
+                                        <option value="morgan_zh">摩根費里曼 (ZH)</option>
+                                        <option value="hillary_zh">希拉蕊 (ZH)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btn-story" class="action-btn" data-i18n="story.generate">生成故事 (約 3-5 分鐘)</button>
+
+                    <div id="story-loading" class="loading-area hidden">
+                        <div class="spinner"></div>
+                        <p id="story-loading-text" data-i18n="story.loading">正在生成故事...</p>
+                    </div>
+
+                    <div class="result-placeholder" id="story-placeholder">
+                        <p data-i18n="story.placeholder">AI生成的故事將顯示於此</p>
+                    </div>
+
+                    <div class="result-area hidden" id="story-result-area"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script_v8.js"></script>
+</body>
+</html>
